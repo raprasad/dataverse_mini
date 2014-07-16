@@ -3,6 +3,6 @@ requests>=2.3.0
 Pillow>=2.4.0
 reportlab>=3.0
 xlrd>=0.9.3
-numpy=1.8.1
+numpy>=1.8.1
 django-braces>=1.2.2
 logutils>=0.3.3
