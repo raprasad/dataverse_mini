@@ -1,19 +1,19 @@
 from django.contrib import admin
-from dataverses.models import Dataverse, DataverseProfile
+from apps.dataverses.models import Dataverse, DataverseProfile
 
 class DataverseAdmin(admin.ModelAdmin):
 
     save_on_top = True
     search_fields = []
-    list_display = ['id',   'name', 'parent_dataverse', 'created',]
-    list_filter = [ 'parent_dataverse']   
-    readonly_fields = ['created', 'md5', 'modified', 'publication_date',]
+    list_display = ['id',   'name', 'parent', 'created',]
+    list_filter = [ 'parent']   
+    readonly_fields = ['created', 'modified', 'publication_date',]
     fieldsets = [
         ('Dataverse', {
            'fields': ('name'\
            , 'contact_email'\
             , 'description'\
-            , 'parent_dataverse'\
+            , 'parent'\
             , 'affiliation'\
             , 'alias'\
             , 'facetroot'\

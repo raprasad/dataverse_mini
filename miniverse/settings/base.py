@@ -198,9 +198,10 @@ DJANGO_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'core',
-    'dataverses',
-    'datasets',
+    'mptt',
+    'apps.core',
+    'apps.dataverses',
+    'apps.datasets',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

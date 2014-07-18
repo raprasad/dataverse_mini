@@ -1,23 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from core.models import TimeStampedModel
+from apps.core.models import TimeStampedModel
+from mptt.models import MPTTModel, TreeForeignKey
 
-
-class Dataverse(TimeStampedModel):
+class Dataverse(MPTTModel):
+    
     name = models.CharField(max_length=255) 
     description = models.TextField()  # used for Dataverse objects?
     
     contact_email = models.EmailField(max_length=255) 
 
-    parent_dataverse = models.ForeignKey('self', blank=True, null=True) 
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     
     permissionroot = models.BooleanField(default=False) 
     
-    creator = models.ForeignKey(User, blank=True, null=True, related_name='creator')   
+    creator = models.ForeignKey(User, blank=True, null=True, related_name='creator', on_delete=models.PROTECT)   
  
     publication_date = models.DateTimeField(blank=True, null=True)
-    release_user = models.ForeignKey(User, blank=True, null=True, related_name='release_user')    
+    release_user = models.ForeignKey(User, blank=True, null=True, related_name='release_user', on_delete=models.PROTECT)    
 
     affiliation = models.CharField(max_length=255, blank=True)
     alias = models.SlugField(max_length=255, blank=True) 
@@ -25,7 +26,9 @@ class Dataverse(TimeStampedModel):
     facetroot = models.BooleanField()   
     metadatablockroot = models.BooleanField()   
 
-    md5 = models.CharField(max_length=255, blank=True)  # DataFile
+
+    created = models.DateTimeField(auto_now_add=True) 
+    modified = models.DateTimeField(auto_now=True) 
 
     def __unicode__(self):
         return self.name
@@ -33,6 +36,9 @@ class Dataverse(TimeStampedModel):
     class Meta:
         ordering = ('name',)
         
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
 
 class DataverseProfile(TimeStampedModel):
     dataverse = models.ForeignKey(Dataverse)
