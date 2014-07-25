@@ -202,6 +202,8 @@ LOCAL_APPS = (
     'apps.core',
     'apps.dataverses',
     'apps.datasets',
+    'apps.metadata_block',
+    'apps.metadata_citations',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

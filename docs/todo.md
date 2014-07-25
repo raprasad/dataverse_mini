@@ -11,4 +11,4 @@
  - [ ] Guardian or alternative
  
 ### API
- - [ ] Guardian or alternative
+ - [ ] Tastypie
