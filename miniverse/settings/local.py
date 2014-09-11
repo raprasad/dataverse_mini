@@ -75,3 +75,6 @@ INTERNAL_IPS = ('127.0.0.1',)
 SESSION_COOKIE_NAME = 'dataverse_mini'
 ########## END SESSION_COOKIE_NAME
 
+########## DV_DATAFILE_DIRECTORY
+DV_DATAFILE_DIRECTORY = join(TEST_SETUP_DIR, 'dv_datafile_directory')
+########## END DV_DATAFILE_DIRECTORY

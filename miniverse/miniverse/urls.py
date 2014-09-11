@@ -12,9 +12,9 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     url(r'^dv/', include('apps.dataverses.urls')),
 
-    (r'^geo-connect-admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^miniverse-admin//doc/', include('django.contrib.admindocs.urls')),
     
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^miniverse-admin/', include(admin.site.urls)),
     
 ) 
 

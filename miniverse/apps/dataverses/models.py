@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from apps.core.models import TimeStampedModel
+from django.utils.text import slugify
+
+from model_utils.models import TimeStampedModel
 from mptt.models import MPTTModel, TreeForeignKey
 
 class Dataverse(MPTTModel):
-    
+    """
+    Basic dataverse object
+    """
     name = models.CharField(max_length=255) 
     description = models.TextField()  # used for Dataverse objects?
     
@@ -15,17 +19,23 @@ class Dataverse(MPTTModel):
     
     permissionroot = models.BooleanField(default=False) 
     
-    creator = models.ForeignKey(User, blank=True, null=True, related_name='creator', on_delete=models.PROTECT)   
+    creator = models.ForeignKey(User, related_name='creator', on_delete=models.PROTECT)
  
     publication_date = models.DateTimeField(blank=True, null=True)
-    release_user = models.ForeignKey(User, blank=True, null=True, related_name='release_user', on_delete=models.PROTECT)    
-
-    affiliation = models.CharField(max_length=255, blank=True)
-    alias = models.SlugField(max_length=255, blank=True) 
+    release_user = models.ForeignKey(User, blank=True, null=True, related_name='release_user', on_delete=models.PROTECT)
+    affiliation = models.CharField(max_length=255)
+    alias = models.SlugField(max_length=255, blank=True, help_text='auto-filled on save')
     
-    facetroot = models.BooleanField()   
-    metadatablockroot = models.BooleanField()   
+    facetroot = models.BooleanField(default=False)
+    metadatablockroot = models.BooleanField(default=False)
 
+    permission_root = models.BooleanField(default=False)
+    template_root = models.BooleanField(default=False)
+
+    #default_template = models.
+
+    display_by_type = models.BooleanField(default=False)
+    display_feature = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True) 
     modified = models.DateTimeField(auto_now=True) 
@@ -33,14 +43,28 @@ class Dataverse(MPTTModel):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+
+        self.alias = slugify(self.name)
+        super(Dataverse, self).save(*args, **kwargs)
+
+
     class Meta:
         ordering = ('name',)
-        
+        permissions = (
+                    ("publish_dataverse", "Can publish dataverse"),
+#                    ("change_task_status", "Can change the status of tasks"),
+#                    ("close_task", "Can remove a task by setting its status as closed"),
+                )
+                
     class MPTTMeta:
         order_insertion_by = ['name']
 
 
 class DataverseProfile(TimeStampedModel):
+    """
+    Customize the look/feel of a dataverse
+    """
     dataverse = models.ForeignKey(Dataverse)
     name = models.CharField(max_length=255)
     

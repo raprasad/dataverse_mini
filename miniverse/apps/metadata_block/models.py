@@ -5,7 +5,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 
-from apps.core.models import TimeStampedModel
+from model_utils.models import TimeStampedModel
 from apps.datasets.models import Dataset
 from mptt.models import MPTTModel, TreeForeignKey
 

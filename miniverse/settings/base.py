@@ -194,6 +194,9 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+
+    # helper classes
+    'model_utils',
 )
 
 # Apps specific for this project go here.
@@ -202,6 +205,7 @@ LOCAL_APPS = (
     'apps.core',
     'apps.dataverses',
     'apps.datasets',
+    'apps.datafiles',
     'apps.metadata_block',
     'apps.metadata_citations',
 )

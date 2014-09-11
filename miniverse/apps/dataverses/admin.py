@@ -1,11 +1,13 @@
 from django.contrib import admin
 from apps.dataverses.models import Dataverse, DataverseProfile
+from mptt.admin import MPTTModelAdmin
 
-class DataverseAdmin(admin.ModelAdmin):
+
+class DataverseAdmin(MPTTModelAdmin):#admin.ModelAdmin):
 
     save_on_top = True
     search_fields = []
-    list_display = ['id',   'name', 'parent', 'created',]
+    list_display = [  'name', 'parent', 'created',]
     list_filter = [ 'parent']   
     readonly_fields = ['created', 'modified', 'publication_date',]
     fieldsets = [
@@ -28,8 +30,12 @@ class DataverseAdmin(admin.ModelAdmin):
          ('Publication', { \
             'fields' : ('publication_date', 'release_user' )\
          }),
+
+         #('MPTT', { \
+         #   'fields' : ('lft', 'rght', 'tree_id', 'level' )\
+         #}),
         ('Read-only Fields', {\
-            'fields': ( 'created', 'modified', )
+            'fields': ( 'created', 'modified',)
         }),
        ]
 
@@ -38,6 +44,8 @@ admin.site.register(Dataverse, DataverseAdmin)
 
 admin.site.register(DataverseProfile)   #, DataverseProfileAdmin)
 
+from django.contrib.auth.models import Permission
+admin.site.register(Permission) 
 """
   ('Dataverse Styling', {
               'fields': ('tagline'\

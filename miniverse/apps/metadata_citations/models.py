@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.core.models import TimeStampedModel
+from model_utils.models import TimeStampedModel
 from apps.metadata_block.models import MetadataBlock
 
 class CitationSubject(TimeStampedModel):

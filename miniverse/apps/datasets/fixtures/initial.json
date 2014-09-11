@@ -1,0 +1,18 @@
+[
+{
+    "pk": 1, 
+    "model": "datasets.dataset", 
+    "fields": {
+        "identifier": "1", 
+        "protocol": "DOI", 
+        "title": "Transportation", 
+        "creator": 1, 
+        "modified": "2014-09-10T18:51:47.051Z", 
+        "authority": "blah", 
+        "created": "2014-09-10T18:51:47.043Z", 
+        "dataverse": 1, 
+        "publication_date": null, 
+        "release_user": 1
+    }
+}
+]
