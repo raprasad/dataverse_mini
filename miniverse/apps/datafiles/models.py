@@ -1,4 +1,5 @@
 from os.path import basename, join
+import mimetypes
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -13,6 +14,7 @@ from model_utils.models import TimeStampedModel
 
 from apps.datasets.models import Dataset
 from apps.utils.uuid_service import generate_storage_identifier
+from apps.utils.md5_service import md5sum
 
 INGEST_STATUS_NONE = 1
 INGEST_STATUS_SCHEDULED = 2
@@ -25,7 +27,7 @@ dv_file_system_storage = FileSystemStorage(location=settings.DV_DATAFILE_DIRECTO
 
 def generate_new_filename(instance, filename):
     #f, ext = os.path.splitext(filename)
-
+    instance.original_filename = basename(filename)
     return join(instance.dataset.get_partial_path_for_datafile(), generate_storage_identifier())
 
 class DataFile(TimeStampedModel):
@@ -36,13 +38,19 @@ class DataFile(TimeStampedModel):
     """
     dataset = models.ForeignKey(Dataset, on_delete=models.PROTECT)
 
-    content_type = models.CharField(max_length=255, db_index=True)
+    content_type = models.CharField(blank=True, max_length=255, db_index=True, help_text='(auto-filled on save)')
 
     file_obj = models.FileField(upload_to=generate_new_filename\
                             , storage=dv_file_system_storage)# max_length=255)
 
     file_system_name = models.CharField(max_length=255, blank=True, help_text='(auto-filled on save)')
+
+    original_filename = models.CharField(max_length=255, blank=True, help_text='(auto-filled on save)')
+
+
     file_size = models.BigIntegerField('File size (in bytes)', default=-1, help_text='(auto-filled on save)')
+
+    md5 = models.CharField(max_length=255, blank=True, help_text='(auto-filled on save)')
 
     #ingest_status = Choices('none', 'scheduled', 'in progress', 'error')
     ingest_status = models.IntegerField(choices=INGEST_CHOICES, default=INGEST_STATUS_NONE)
@@ -52,7 +60,8 @@ class DataFile(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         self.file_size = self.file_obj.size
-        #self.file_system_name = basename(self.file_obj.name)
+        #if not self.original_filename:
+        #    self.original_filename = basename(self.file_obj.name)
         super(DataFile, self).save(*args, **kwargs)
 
 
@@ -68,7 +77,15 @@ def update_file_system_name(sender, **kwargs):
     datafile_obj = kwargs.get('instance', None)
     if type(datafile_obj) is not DataFile:
         return
+
+    try:
+        content_type =  mimetypes.guess_type(datafile_obj.original_filename)[0]
+    except:
+        content_type = 'unknown'
+
     DataFile.objects.filter(id=datafile_obj.id\
                     ).update(\
                         file_system_name=basename(datafile_obj.file_obj.name)\
+                        , md5=md5sum(datafile_obj.file_obj.file.name)\
+                        , content_type=content_type\
                     )
