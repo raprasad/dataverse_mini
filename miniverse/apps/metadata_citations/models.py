@@ -6,7 +6,7 @@ from apps.metadata_block.models import MetadataBlock
 class CitationSubject(TimeStampedModel):
     name = models.CharField(max_length=255)
     
-    def unicode(self):
+    def __unicode__(self):
         return self.name
     
     class Meta:
@@ -15,7 +15,7 @@ class CitationSubject(TimeStampedModel):
 class CitationAuthor(TimeStampedModel):
     name = models.CharField(max_length=255, help_text='The person(s), corporate body(ies), or agency(ies) responsible for creating the work.')
     
-    def unicode(self):
+    def __unicode__(self):
         return '%s, %s' % (self.last_name, self.first_name)
     
     class Meta:
@@ -25,7 +25,7 @@ class DistributorContact(TimeStampedModel):
     
     email = models.EmailField()
 
-    def unicode(self):
+    def __unicode__(self):
         return self.email
     
     class Meta:
@@ -48,7 +48,7 @@ class CitationBlock(MetadataBlock):
     dsDescription = models.TextField(help_text="A summary describing the purpose, nature, and scope of the Dataset.")
     subject = models.ManyToManyField(CitationSubject)
 
-    def unicode(self):
+    def __unicode__(self):
         return self.title
 
     class Meta:
