@@ -1,0 +1,42 @@
+[
+{
+    "pk": 1, 
+    "model": "datasets.versionstate", 
+    "fields": {
+        "sort_order": 1, 
+        "name": "Draft"
+    }
+},
+{
+    "pk": 2, 
+    "model": "datasets.versionstate", 
+    "fields": {
+        "sort_order": 3, 
+        "name": "Released"
+    }
+},
+{
+    "pk": 3, 
+    "model": "datasets.versionstate", 
+    "fields": {
+        "sort_order": 4, 
+        "name": "Archived"
+    }
+},
+{
+    "pk": 4, 
+    "model": "datasets.versionstate", 
+    "fields": {
+        "sort_order": 5, 
+        "name": "Deaccessioned"
+    }
+},
+{
+    "pk": 5, 
+    "model": "datasets.versionstate", 
+    "fields": {
+        "sort_order": 2, 
+        "name": "In Review"
+    }
+}
+]

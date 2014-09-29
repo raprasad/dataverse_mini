@@ -7,7 +7,7 @@ from django.conf import settings
 
 from model_utils.models import TimeStampedModel
 from apps.dataverses.models import Dataverse
-
+#from apps.metadata_citations.models import CitationBlock
 
 class Dataset(TimeStampedModel):
     """
@@ -42,7 +42,46 @@ class Dataset(TimeStampedModel):
         ordering = ('title', '-publication_date')
 
 
+class VersionState(models.Model):
+    name = models.CharField(max_length=30, db_index=True)
+    sort_order = models.IntegerField()
+    
+    def __unicode__(self):
+        return self.name
+        
+    class Meta:
+        ordering = ('sort_order', 'name')
+    #DRAFT, IN_REVIEW, RELEASED, ARCHIVED, DEACCESSIONED
+
+    
 class DatasetVersion(TimeStampedModel):
+
+    dataset = models.ForeignKey(Dataset)
+    
+    version_state = models.ForeignKey(VersionState)
+    
+    version_number = models.IntegerField()
+    version_minor_number = models.IntegerField()
+    
+    semantic_version = models.CharField(max_length=50, blank=True, help_text='auto-filled on save')
+    
+    #citation_block = models.ForeignKey(CitationBlock)
+    
+    deaccessionLink = models.URLField(blank=True)
+    
+    archive_note = models.TextField(max_length=1000, blank=True)
+    archive_time = models.DateTimeField(blank=True, null=True)
+    
+
+    def __unicode__(self):
+        return '%s; v. %s' % (self.dataset, self.semantic_version)
+
+
+    def save(self, *args, **kwargs):
+        self.semantic_version = '%s.%s' % (self.version_number, self.version_minor_number)
+        super(DatasetVersion, self).save(*args, **kwargs)
+    
+    
     """
     title
     version_state       # #DRAFT, IN_REVIEW, RELEASED, ARCHIVED, DEACCESSIONED

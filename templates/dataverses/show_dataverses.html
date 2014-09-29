@@ -1,4 +1,7 @@
+{% extends "base.html" %}
 {% load mptt_tags %}
+
+{% block main_content %}
 <ul>
     {% recursetree nodes %}
         <li>
@@ -11,3 +14,4 @@
         </li>
     {% endrecursetree %}
 </ul>
+{% endblock %}

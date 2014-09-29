@@ -56,13 +56,13 @@ CACHES = {
 ########## TOOLBAR CONFIGURATION
 # See: http://django-debug-toolbar.readthedocs.org/en/latest/installation.html#explicit-setup
 INSTALLED_APPS += (
-    #'debug_toolbar',
+    'debug_toolbar',
     #'djcelery',
     #'kombu.transport.django', 
 )
 
 MIDDLEWARE_CLASSES += (
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False

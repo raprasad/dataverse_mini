@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 
 from model_utils.models import TimeStampedModel
 from apps.datasets.models import Dataset
-from mptt.models import MPTTModel, TreeForeignKey
 
 
 class MetadataBlock(TimeStampedModel):
@@ -19,7 +18,7 @@ class MetadataBlock(TimeStampedModel):
     ADVANCED_SEARCH_FIELDS = None
     
     # blanked out for now
-    #dataset = models.ForeignKey(Dataset, db_index=True)
+    #dataset_version = models.ForeignKey(DatasetVersion, db_index=True)
     
     # These should be part of the "manager" and abstracted from the content type
     #metadata_block_name = models.CharField(max_length=255, help_text='For display') 
